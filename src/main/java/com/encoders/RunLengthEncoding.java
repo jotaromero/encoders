@@ -2,7 +2,11 @@ package com.encoders;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class RunLengthEncoder {
+/**
+ * 'Run Length Encoding' technique which is heavily used in string data compression.
+ * Earlier days this is used to compress the black and white photos.
+ * */
+public class RunLengthEncoding {
 
     public String encode(String source) {
         if (StringUtils.isBlank(source)) {

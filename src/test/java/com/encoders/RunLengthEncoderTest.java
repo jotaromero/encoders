@@ -12,11 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class RunLengthEncoderTest {
 
-    private RunLengthEncoder sut;
+    private RunLengthEncoding sut;
 
     @BeforeEach
     void setUp() {
-        sut = new RunLengthEncoder();
+        sut = new RunLengthEncoding();
     }
 
     @ParameterizedTest
