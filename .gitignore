@@ -1,2 +1,10 @@
+*.iml
+*.ipr
+*.iws
+*.jar
+.gradle
 .idea
+bin
+build
+out
 target
