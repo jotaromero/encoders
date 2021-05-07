@@ -50,17 +50,18 @@ class RunLengthEncoderTest {
 
     private static Stream<Arguments> provideInputForEncoding() {
         return Stream.of(
-                Arguments.of("xxxyyziiii", "X3Y2Z1I4"),
-                Arguments.of("aaabbccccd", "A3B2C4D1"),
-                Arguments.of("KKKKKKIIIIIIUUUUASDFGLLLL", "K6I6U4A1S1D1F1G1L4")
+                Arguments.of("xxxyyziiii", "X3Y2ZI4"),
+                Arguments.of("aaabbccccd", "A3B2C4D"),
+                Arguments.of("KKKKKKIIIIIIUUUUASDFGLLLL", "K6I6U4ASDFGL4")
         );
     }
 
     private static Stream<Arguments> provideInputForDecoding() {
         return Stream.of(
-                Arguments.of("x3y2z1i4", "XXXYYZIIII"),
+                Arguments.of("x3y2zi4", "XXXYYZIIII"),
                 Arguments.of("A3B2C4D1", "AAABBCCCCD"),
                 Arguments.of("R4a1m7k3h1d2", "RRRRAMMMMMMMKKKHDD"),
+                Arguments.of("R4abcdm7k3hd2", "RRRRABCDMMMMMMMKKKHDD"),
                 Arguments.of("K6I6U4A1S1D1F1G1L4", "KKKKKKIIIIIIUUUUASDFGLLLL")
         );
     }

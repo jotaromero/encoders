@@ -2,10 +2,13 @@ package com.encoders;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * 'Run Length Encoding' technique which is heavily used in string data compression.
  * Earlier days this is used to compress the black and white photos.
- * */
+ */
 public class RunLengthEncoding {
 
     public String encode(String source) {
@@ -14,28 +17,20 @@ public class RunLengthEncoding {
         }
 
         String input = source.trim().toUpperCase();
-        if (input.length() == 1) {
-            return source + "1";
-        }
 
         int inputLength = source.length();
-
-        int count = 1;
-        char initialChar = input.charAt(0);
         StringBuilder encoded = new StringBuilder(256);
 
-        for (int i = 1; i < inputLength; i++) {
-            char character = input.charAt(i);
-            if (character == initialChar) {
+        for (int i = 0; i < inputLength; i++) {
+            int count = 1;
+            while ((i < inputLength - 1) && input.charAt(i) == input.charAt(i + 1)) {
                 count++;
-            } else {
-                encoded.append(initialChar).append(count);
-                count = 1;
-                initialChar = character;
+                i++;
             }
 
-            if (i == inputLength -1) {
-                encoded.append(initialChar).append(count);
+            encoded.append(input.charAt(i));
+            if (count > 1){
+                encoded.append(count);
             }
         }
 
@@ -46,38 +41,26 @@ public class RunLengthEncoding {
         checkSourceToDecode(source);
 
         String input = source.trim().toUpperCase();
-        int inputLength = source.length();
         StringBuilder result = new StringBuilder(256);
-        StringBuilder countCharacter = new StringBuilder();
 
-        int count;
-        char initialCharacter = input.charAt(0);
-        for (int i = 1; i < inputLength; i++) {
-            char character = input.charAt(i);
-            if (Character.isDigit(character)) {
-                countCharacter.append(character);
-            } else {
-                count = Integer.parseInt(countCharacter.toString());
-                result.append(repeat(initialCharacter, count));
-                initialCharacter = character;
-                countCharacter.setLength(0);
-            }
-        }
+        Pattern pattern = Pattern.compile("[A-Z][0-9]*");
+        Matcher matcher = pattern.matcher(input);
 
-        if (StringUtils.isNotEmpty(countCharacter.toString())) {
-            count = Integer.parseInt(countCharacter.toString());
-            result.append(repeat(initialCharacter, count));
+        while (matcher.find()){
+            String group = matcher.group();
+            String decoded = getDecodedCharacter(group);
+            result.append(decoded);
         }
 
         return result.toString();
     }
 
-    private String repeat(char ch, int count) {
-        if (!Character.isLetter(ch)){
-            throw new IllegalArgumentException("Cannot decode source has contains invalid characters");
+    private String getDecodedCharacter(String group) {
+        if (group.length() == 1){
+            return group;
         }
 
-        return StringUtils.repeat(ch, count);
+        return StringUtils.repeat(group.charAt(0), Integer.parseInt(group.substring(1)));
     }
 
     private void checkSourceToDecode(String source) {
